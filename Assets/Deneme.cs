@@ -11,22 +11,28 @@ public class Deneme : MonoBehaviour
 	public Sprite[] sprites;
 	private int a = 9;
 	private int temp = 10;
+	private int clickNo = 0;
+	
 	
 	public void OnClick()
     {
-        StartCoroutine(MyFunction(0.3f));
+		if(clickNo < 9)
+		{
+			StartCoroutine(MyFunction(0.2f));		
+		}else
+		{
+			SceneManager.LoadScene("Home");
+		}
+		clickNo += 1; 
 	}
 
 	private IEnumerator MyFunction(float delayTime)
 	{
 		int randomIndex;
 		int randomIndexSprite;
-
 		
-
 		for(int i = 0; i < a + 1; i++)
 		{
-			
 			if(a == 1)
 			{
 				for(int j = 0; j < 9; j++)
@@ -39,8 +45,7 @@ public class Deneme : MonoBehaviour
 				}
 				ChangeColorToGreen(0);
 				skins[0].transform.GetChild(1).GetComponent<Image>().sprite = sprites[0];
-				yield return new WaitForSeconds(1);
-				SceneManager.LoadScene("Home");
+				a = a - 1;
 				break;
 			}
 
@@ -55,10 +60,9 @@ public class Deneme : MonoBehaviour
 			temp = randomIndex;
 
 			if(i == a)
-			{
+			{	
 				for(int j = 0; j < 9; j++)
 				{
-					//skins1[j].GetComponent<Image>().color =  new Color(128f/255f, 128f/255f, 128f/255f);
 					if(skins1[j].GetComponent<Image>().color == Color.green)
 					{
 						skins1[j].GetComponent<Image>().color = new Color(233f/255f, 232f/255f, 232f/255f);
@@ -68,6 +72,7 @@ public class Deneme : MonoBehaviour
 				ChangeColorToGreen(randomIndex);
 				skins[randomIndex].transform.GetChild(1).GetComponent<Image>().sprite = sprites[randomIndexSprite]; 	
 				
+				// Below Lines remove selected skin and sprite from the arrays.
 				List<GameObject> tmpSkin = new List<GameObject>(skins);
 				tmpSkin.RemoveAt(randomIndex);
 				skins = tmpSkin.ToArray();
